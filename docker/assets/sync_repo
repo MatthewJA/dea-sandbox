@@ -3,6 +3,9 @@
 REPO=$1
 BRANCH="${2:-master}"
 
+REPO_NAME=$(basename -- "$REPO")
+REPO_DIR="${REPO_NAME%.*}"
+
 # Don't sync if there's a .no_sync file
 [ -e .no_sync  ] || {
     # Sync notebook repo
@@ -15,4 +18,5 @@ BRANCH="${2:-master}"
     rm -rf "${WORKDIR}"/{.git,.github,.gitignore,LICENSE,README.md,DEAfrica_notebooks_template.ipynb} || true
     rsync --verbose --recursive "${WORKDIR}/" ~/
     rm -rf "${WORKDIR}"
+    pip install -e REPO_DIR/Tools
 }
